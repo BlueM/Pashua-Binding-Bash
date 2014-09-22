@@ -19,19 +19,23 @@
 pashua_run() {
 
 	# Write config file
-	pashua_configfile=`/usr/bin/mktemp /tmp/pashua_XXXXXXXXX`
+	local pashua_configfile=`/usr/bin/mktemp /tmp/pashua_XXXXXXXXX`
 	echo "$1" > $pashua_configfile
 
 	# Find Pashua binary. We do search both . and dirname "$0"
 	# , as in a doubleclickable application, cwd is /
 	# BTW, all these quotes below are necessary to handle paths
 	# containing spaces.
-	bundlepath="Pashua.app/Contents/MacOS/Pashua"
+	local bundlepath="Pashua.app/Contents/MacOS/Pashua"
+	local pashuapath=""
 	if [ "$3" = "" ]
 	then
 		mypath=`dirname "$0"`
-		for searchpath in "$mypath/Pashua" "$mypath/$bundlepath" "./$bundlepath" \
-						  "/Applications/$bundlepath" "$HOME/Applications/$bundlepath"
+		for searchpath in "$mypath/Pashua" \
+		                  "$mypath/$bundlepath" \
+		                  "./$bundlepath" \
+						  "/Applications/$bundlepath" \
+						  "$HOME/Applications/$bundlepath"
 		do
 			if [ -f "$searchpath" -a -x "$searchpath" ]
 			then
@@ -44,7 +48,7 @@ pashua_run() {
 		pashuapath="$3/$bundlepath"
 	fi
 
-	if [ ! "$pashuapath" ]
+	if [ "" = "$pashuapath" ]
 	then
 		>&2 echo "Error: Pashua could not be found"
 		exit 1
@@ -53,13 +57,13 @@ pashua_run() {
 	# Manage encoding
 	if [ "$2" = "" ]
 	then
-		encoding=""
+		local encoding=""
 	else
-		encoding="-e $2"
+		local encoding="-e $2"
 	fi
 
 	# Get result
-	result=$("$pashuapath" $encoding $pashua_configfile | perl -pe 's/ /;;;/g;')
+	local result=$("$pashuapath" $encoding $pashua_configfile | perl -pe 's/ /;;;/g;')
 
 	# Remove config file
 	rm $pashua_configfile
@@ -73,9 +77,7 @@ pashua_run() {
 		varvalue="$value"
 		eval $varname='$varvalue'
 	done
-
-} # pashua_run()
-
+}
 
 # Define what the dialog should be like
 # Take a look at Pashua's Readme file for more info on the syntax
