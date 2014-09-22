@@ -46,7 +46,7 @@ pashua_run() {
 
 	if [ ! "$pashuapath" ]
 	then
-		echo "Error: Pashua could not be found"
+		>&2 echo "Error: Pashua could not be found"
 		exit 1
 	fi
 
