@@ -71,9 +71,18 @@ db.type = defaultbutton
 db.tooltip = This is an element of type “defaultbutton” (which is automatically added to each window, if not included in the configuration)
 "
 
+if [ -d '/Volumes/Pashua/Pashua.app' ]
+then
+	# Looks like the Pashua disk image is mounted. Run from there.
+	customLocation='/Volumes/Pashua'
+else
+	# Search for Pashua in the standard locations
+	customLocation=''
+fi
+
 # Get the icon from the application bundle
-locate_pashua
-bundlecontents=$(dirname $(dirname "$pashuapath"));
+locate_pashua "$customLocation"
+bundlecontents=$(dirname $(dirname "$pashuapath"))
 if [ -e "$bundlecontents/Resources/AppIcon@2.png" ]
 then
     conf="$conf
@@ -85,7 +94,7 @@ then
           img.path = $bundlecontents/Resources/AppIcon@2.png"
 fi
 
-pashua_run "$conf"
+pashua_run "$conf" "$customLocation"
 
 echo "Pashua created the following variables:"
 echo "  tb  = $tb"
