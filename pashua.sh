@@ -21,7 +21,7 @@ locate_pashua() {
     searchpaths[3]="./$bundlepath"
     searchpaths[4]="/Applications/$bundlepath"
     searchpaths[5]="$HOME/Applications/$bundlepath"
-    
+
     for searchpath in "${searchpaths[@]}"
     do
         if [ -f "$searchpath" -a -x "$searchpath" ]
@@ -42,7 +42,7 @@ pashua_run() {
 
     # Write config file
     local pashua_configfile=`/usr/bin/mktemp /tmp/pashua_XXXXXXXXX`
-    echo "$1" > $pashua_configfile
+    echo "$1" > "$pashua_configfile"
 
     locate_pashua "$2"
 
@@ -53,18 +53,21 @@ pashua_run() {
     fi
 
     # Get result
-    local result=$("$pashuapath" $pashua_configfile | perl -pe 's/ /;;;/g;')
+    local result=$("$pashuapath" "$pashua_configfile")
 
     # Remove config file
-    rm $pashua_configfile
+    rm "$pashua_configfile"
+
+    oldIFS="$IFS"
+    IFS=$'\n'
 
     # Parse result
     for line in $result
     do
-        key=$(echo $line | sed 's/^\([^=]*\)=.*$/\1/')
-        value=$(echo $line | sed 's/^[^=]*=\(.*\)$/\1/' | sed 's/;;;/ /g')
-        varname=$key
-        varvalue="$value"
-        eval $varname='$varvalue'
+        local name=$(echo $line | sed 's/^\([^=]*\)=.*$/\1/')
+        local value=$(echo $line | sed 's/^[^=]*=\(.*\)$/\1/')
+        eval $name='$value'
     done
+
+    IFS="$oldIFS"
 }
