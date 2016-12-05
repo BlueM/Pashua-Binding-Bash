@@ -1,7 +1,7 @@
 Overview
 ===========
 
-This is a Bash language binding (glue code) for using [Pashua](http://www.bluem.net/jump/pashua) from Bash scripts. Pashua is a Mac OS X application for using native GUI dialog windows in various programming languages.
+This is a Bash language binding (glue code) for using [Pashua](http://www.bluem.net/jump/pashua) from Bash scripts. Pashua is a macOS application for using native GUI dialog windows in various programming languages.
 
 This code can be found in a GitHub repository at https://github.com/BlueM/Pashua-Binding-Bash. For examples in other programming languages, see https://github.com/BlueM/Pashua-Bindings.
 
@@ -18,7 +18,7 @@ Of course, you will need Pashua on your Mac to run the example. The code expects
 
 Compatibility
 =============
-This code should run with a Bash that shipped with any Mac OS X that is able to run Pashua.
+This code should run with a Bash that shipped with any macOS that is able to run Pashua.
 
 It is compatible with Pashua 0.10. It will work with earlier versions of Pashua, but non-ASCII characters will not be displayed correctly, as any versions before 0.10 required an argument for marking input as UTF-8.
 
