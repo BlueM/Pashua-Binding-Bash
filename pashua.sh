@@ -41,7 +41,7 @@ locate_pashua() {
 pashua_run() {
 
     # Write config file
-    local pashua_configfile=`/usr/bin/mktemp /tmp/pashua_XXXXXXXXX`
+    local pashua_configfile=`/usr/bin/mktemp "${TMPDIR:-/tmp}"/pashua_XXXXXXXXX`
     echo "$1" > "$pashua_configfile"
 
     locate_pashua "$2"
